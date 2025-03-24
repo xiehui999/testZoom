@@ -1,0 +1,69 @@
+{
+  "payload": {
+    "account_id": "5stPw2ZgReuY51hCAWz5CQ",
+    "object": {
+      "uuid": "wlPCawFgSqa1djKZwbXkOQ==",
+      "id": 88944918046,
+      "account_id": "5stPw2ZgReuY51hCAWz5CQ",
+      "host_id": "TUr91q_gTfaE5uezmegjJw",
+      "topic": "Altatech Altatech的Zoom会议",
+      "type": 1,
+      "start_time": "2025-03-24T04:22:39Z",
+      "timezone": "",
+      "host_email": "develop@altatech.dev",
+      "durati": 0,
+      "total_size": 608421,
+      "recording_count": 3,
+      "share_url": "https://us06web.zoom.us/rec/share/tiCkT9Mu7ARY6YK3_SDD5T-lMuAeB4c8xUa9j0UJW6P1iiuBlDqKOHEOcnGraVg2.nAFOLt2dEFlRLsvD",
+      "recording_files": [
+        {
+          "id": "2d1bf480-aaba-42d5-860a-5690659740a1",
+          "meeting_id": "wlPCawFgSqa1djKZwbXkOQ==",
+          "recording_start": "2025-03-24T04:23:18Z",
+          "recording_end": "2025-03-24T04:23:36Z",
+          "file_type": "MP4",
+          "file_extension": "MP4",
+          "file_size": 327373,
+          "play_url": "https://us06web.zoom.us/rec/play/Gg38_Xhoiimg5_hzwjncfi1EU7jlPWRwGg5jsdBZ5NNjDef0AUwK2r2IKTcZt8SLYUOCEMKAOA2ARkkj.Db6Ss4mxjmV2ToUH",
+          "download_url": "https://us06web.zoom.us/rec/webhook_download/Gg38_Xhoiimg5_hzwjncfi1EU7jlPWRwGg5jsdBZ5NNjDef0AUwK2r2IKTcZt8SLYUOCEMKAOA2ARkkj.Db6Ss4mxjmV2ToUH/Bnh-DHikvdXaf2fShmuXZSoKPMUyQwvH3b_ojeEGpOZ_h3ZQ7chYxfrNIg4PyRR-VXs7Ub6S5B91MxAkt9GyVnNbBBC289pRs6OmArj-3NY3e-M9a-aDhW6k_clvZ9VcHE193oVygNbqDkKLrayMdmT2FG5Ok9ThQwDMVOO8NkW0ZZ-c_seM4IQNg8iz93pmF3rJcGqUs2e_td-VW3jdG9eXmssy4hwAewLC0MPMzcCoCbbDsk7lJEX7F2eqIYQIGiCTkTCOev8-Bvr8QiHb1TJ4cc0kz1C054EdGmkvpgle0GvjCSD9QAsvSBd9MGlYAlpUvmmENF3dI1W8hBI8tw",
+          "status": "completed",
+          "recording_type": "shared_screen_with_speaker_view",
+          "encryption_fingerprint": ""
+        },
+        {
+          "id": "f472685b-84ef-4d17-bb4f-6ac459411700",
+          "meeting_id": "wlPCawFgSqa1djKZwbXkOQ==",
+          "recording_start": "2025-03-24T04:23:18Z",
+          "recording_end": "2025-03-24T04:23:36Z",
+          "file_type": "M4A",
+          "file_extension": "M4A",
+          "file_size": 280833,
+          "play_url": "https://us06web.zoom.us/rec/play/YJmDWUhSPHC2Xv-wr2keqDwsWm5nSWdyB1Y9e6TWwSWwt5HEJSAWdbPSHNln0_NA6cnFkcW78pZWqgfC.bq1op0VmGBuL0IJ8",
+          "download_url": "https://us06web.zoom.us/rec/webhook_download/YJmDWUhSPHC2Xv-wr2keqDwsWm5nSWdyB1Y9e6TWwSWwt5HEJSAWdbPSHNln0_NA6cnFkcW78pZWqgfC.bq1op0VmGBuL0IJ8/I7G_ecmAnnFxxIzjVTYVelIeA1sdKMjRHwwLs1MSSv6FtUTqSnEseR7DswUxJ4kOWJ8PO-UZD6X8TsLwazJBbSBN75CNWi-q_e0FDDOXjkQIQgo1Hft0NuZonywPeOAArGCmihGRd_ZbZHLH9YEWCEPOgUdmTZzboOwOkt6uHjbnmOnVEsQN5v3PT9XuWJbi2MAqxafuA0OsT8Zw984YejlKtXlGm29VycN6jtQB-OTJHfntyT23QEDEA5F2H_l__-9EQFJUt0IHES57gx2tumwMfI_E7XTsXYgAumvcXl6XAdwvRkEf763tNQIFLwNm3Z62kvMJe28pqE8k1OyfqA",
+          "status": "completed",
+          "recording_type": "audio_only",
+          "encryption_fingerprint": ""
+        },
+        {
+          "id": "2a235d7f-5a8d-4ce7-8526-15a1bc867465",
+          "meeting_id": "wlPCawFgSqa1djKZwbXkOQ==",
+          "recording_start": "2025-03-24T04:23:18Z",
+          "recording_end": "2025-03-24T04:23:36Z",
+          "file_type": "TIMELINE",
+          "file_extension": "JSON",
+          "file_size": 215,
+          "download_url": "https://us06web.zoom.us/rec/webhook_download/0eRcy5mllv-Zsjmt50-pH5ZFqA-z_5Ax9OO1hbq6c5XB4fPIm_TBnQlJKF_AZDCEWDQihZgcecoK4pML.TKE7HpRz0UrbYEiW/EqbQhIWVBIdEE1RFD0QVCm-LaMb6ZlXrurZMIeHL-OgvEoKdYEsEAyEr_JkTL99SbohvHMHx2K1Q0EFhcfgz4aRJAL715bIuG8mgYGxDVaZhAiACaD7GmFSgJlY__NmDYSM8JLrHpCSV9QNvLTKRHIal_Z-mebhtd7MJqZfI_QC1nsWFZ4smjvrP3GOAznlzI56lWDQoe4jY6Etw0wbX6F66fyyxHDwBQL8ujbenRyE9zY38kSVXDWmlRJPJKuhgE7x8WVjFX4D3Guz8nsTA5dbCXVLorf24MtRu-ZE-GEfnPfxyh5CGWpQ_jLCq235KwnoNJYyTgRCVtlU6AiHGCQ",
+          "status": "completed",
+          "recording_type": "timeline",
+          "encryption_fingerprint": ""
+        }
+      ],
+      "password": "UH=7EDjy",
+      "recording_play_passcode": "YkVrw4_jvoQPwkR9D2-wbC3DiSYvRQDu",
+      "on_prem": false
+    }
+  },
+  "event_ts": 1742790298020,
+  "event": "recording.completed",
+  "download_token": "eyJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2In0.eyJhdWQiOiJXZWJSZWNEb3dubG9hZCIsImFjY291bnRJZCI6IjVzdFB3MlpnUmV1WTUxaENBV3o1Q1EiLCJpc3MiOiJFdmVudENvbnN1bWVyUmVjRG93bmxvYWQiLCJtaWQiOiJ3bFBDYXdGZ1NxYTFkaktad2JYa09RPT0iLCJleHAiOjE3NDI4NzY3MTMsImlhdCI6MTc0Mjc5MDMxMywidXNlcklkIjoiVFVyOTFxX2dUZmFFNXVlem1lZ2pKdyJ9.tgRJEALjbvSc6DiyEZ4KSMit7sg9gKn08_fQyaXT7ewXvlySx5uJ7sJI5fn6iS9MRpHzjrzZyBLHVv09awtcjg"
+}
