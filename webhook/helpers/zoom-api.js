@@ -137,6 +137,47 @@ function getZoomUser(uid, token) {
   return apiRequest('GET', `/users/${uid}`, token)
 }
 
+function getCurrentZoomUser(token) {
+  return apiRequest('GET', `/users/me`, token)
+}
+
+function createMeeting(token) {
+  return apiRequest('POST', `/users/me/meetings`, token, {
+    topic: '开发者会议',
+    type: 2, // 立即会议
+    start_time: new Date().toISOString(),
+    duration: 60, // 会议时长 60 分钟
+    timezone: 'UTC',
+    settings: {
+      host_video: true,
+      participant_video: true,
+      auto_recording: 'cloud' // 开启云录制
+    }
+  })
+}
+
+function addUserToMeeting(token, meetingId, email) {
+  return apiRequest('POST', `/meetings/${meetingId}/registrants`, token, {
+    email: email,
+    first_name: '邀请用户',
+    last_name: 'Test'
+  })
+}
+
+function setCoHost(token, meetingId, email) {
+  return apiRequest('PATCH', `/meetings/${meetingId}`, token, {
+    settings: {
+      alternative_hosts: email
+    }
+  })
+}
+
+function startRecording(token, meetingId, email) {
+  return apiRequest('PATCH', `/meetings/${meetingId}/recordings`, token, {
+    action: 'start'
+  })
+}
+
 /**
  * Return the DeepLink for opening Zoom
  * @param {string} token - Zoom App Access Token
@@ -152,6 +193,7 @@ function getDeeplink(token) {
     })
   }).then((data) => Promise.resolve(data.deeplink))
 }
+
 const getZoomAccessToken = async (
   zoomAuthorizationCode,
   redirect_uri = process.env.ZOOM_APP_REDIRECT_URI,
@@ -160,7 +202,7 @@ const getZoomAccessToken = async (
   const params = {
     grant_type: 'authorization_code',
     code: zoomAuthorizationCode,
-    redirect_uri,
+    redirect_uri
   }
 
   if (typeof pkceVerifier === 'string') {
@@ -173,13 +215,13 @@ const getZoomAccessToken = async (
     url: `${process.env.ZOOM_HOST}/oauth/token`,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     auth: {
       username: process.env.ZOOM_APP_CLIENT_ID,
-      password: process.env.ZOOM_APP_CLIENT_SECRET,
+      password: process.env.ZOOM_APP_CLIENT_SECRET
     },
-    data: tokenRequestParamString,
+    data: tokenRequestParamString
   })
 }
 module.exports = {
@@ -187,5 +229,10 @@ module.exports = {
   refreshToken,
   getInstallURL,
   getZoomUser,
+  getCurrentZoomUser,
   getToken,
+  createMeeting,
+  startRecording,
+  setCoHost,
+  addUserToMeeting,
 }
