@@ -3,7 +3,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const crypto = require('crypto')
 const axios = require('axios')
-const { getInstallURL, getToken, getZoomUser, getCurrentZoomUser, createMeeting, addUserToMeeting } = require('./helpers/zoom-api')
+const { getInstallURL, getToken, getZoomUser, getCurrentZoomUser, createMeeting, addUserToMeeting,
+  generateJWTZoomToken
+} = require('./helpers/zoom-api')
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -12,7 +14,7 @@ const ZOOM_API_TOKEN = 'your_zoom_jwt_token'
 
 app.use(bodyParser.json())
 
-const getToken1 = async () => {
+const getAccountToken = async () => {
   try {
     const request = await axios.post(
       process.env.ZOOM_OAUTH_ENDPOINT,
@@ -40,6 +42,12 @@ app.get('/install', async (req, res) => {
   const { url } = getInstallURL()
   res.redirect(url)
 })
+app.get('/generateJWTZoomToken', async (req, res) => {
+  const { meetingId } = req.query
+  if(!meetingId) return res.json('he meeting ID does not exist.')
+  const result  = await generateJWTZoomToken(meetingId)
+  res.json(result)
+})
 let token = ''
 app.get('/auth', async (req, res) => {
   const code = req.query.code
@@ -56,8 +64,8 @@ app.get('/createMeeting', async (req, res) => {
   try {
     const result = await createMeeting(token)
     console.log('getZoomUser(token)', result)
-    const resultAdd = await addUserToMeeting(token, result.id, 'develop@altatech.dev')
-    console.log('addUserToMeeting', resultAdd)
+    // const resultAdd = await addUserToMeeting(token, result.id, 'develop@altatech.dev')
+    // console.log('addUserToMeeting', resultAdd)
     res.json(result)
   } catch (e) {
     console.log('errrrrrrrr', e)

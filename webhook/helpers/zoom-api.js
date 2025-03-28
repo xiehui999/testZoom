@@ -1,7 +1,9 @@
 const crypto = require('crypto')
 const axios = require('axios')
+const { KJUR } = require('jsrsasign')
 
 const { URL } = require('url')
+const jwt = require('jsonwebtoken')
 
 // returns a base64 encoded url
 const base64URL = (s) =>
@@ -224,6 +226,37 @@ const getZoomAccessToken = async (
     data: tokenRequestParamString
   })
 }
+
+function generateJWTZoomToken(meetingNumber, role = 0) {
+  const key = process.env.ZOOM_CLIENT_ID
+  const secret = process.env.ZOOM_CLIENT_SECRET
+  const iat = Math.floor(Date.now() / 1000) - 30  // 签发时间
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 // 过期时间 (1小时)
+  const payload = {
+    app_key: key,
+    iat ,
+    exp,
+    tpc: meetingNumber.toString(), // 会议号
+    role_type: role, // 1: 主持人, 0: 参会者
+  };
+  const key1 = jwt.sign(payload, secret, { algorithm: "HS256" });
+  const oHeader = { alg: 'HS256', typ: 'JWT' }
+
+  const oPayload = {
+    appKey: key,
+    sdkKey: key,
+    mn: meetingNumber.toString(),
+    role,
+    iat,
+    exp,
+    tokenExp: exp
+  }
+
+  const sHeader = JSON.stringify(oHeader)
+  const sPayload = JSON.stringify(oPayload)
+  const sdkJWT = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, process.env.ZOOM_CLIENT_SECRET)
+  return { key1, key2: sdkJWT}
+}
 module.exports = {
   getDeeplink,
   refreshToken,
@@ -235,4 +268,5 @@ module.exports = {
   startRecording,
   setCoHost,
   addUserToMeeting,
+  generateJWTZoomToken,
 }

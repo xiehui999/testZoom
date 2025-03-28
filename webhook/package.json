@@ -24,6 +24,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "jsrsasign": "^11.1.0",
     "query-string": "^9.1.1"
   }
 }
