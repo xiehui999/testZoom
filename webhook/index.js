@@ -76,7 +76,7 @@ app.get('/joinBot', async (req, res) => {
   const { meetingId } = req.query
   try {
     console.log('token', token)
-    console.log('getZoomUser(token)', getZoomUser(token))
+    console.log('getZoomUser(token)')
 
     const response = await axios.post(
       `https://api.zoom.us/v2/meetings/${meetingId}/registrants`,

@@ -153,7 +153,8 @@ function createMeeting(token) {
     settings: {
       host_video: true,
       participant_video: true,
-      auto_recording: 'cloud' // 开启云录制
+      approval_type: 0,
+      auto_recording: 'local' // 开启云录制
     }
   })
 }
@@ -227,19 +228,33 @@ const getZoomAccessToken = async (
   })
 }
 
-function generateJWTZoomToken(meetingNumber, role = 0) {
+function generateRecordingJWTZoomToken(meetingNumber, role = 0) {
   const key = process.env.ZOOM_CLIENT_ID
   const secret = process.env.ZOOM_CLIENT_SECRET
   const iat = Math.floor(Date.now() / 1000) - 30  // 签发时间
-  const exp = Math.floor(Date.now() / 1000) + 60 * 60 // 过期时间 (1小时)
-  const payload = {
-    app_key: key,
-    iat ,
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 *  24// 过期时间 (24小时)
+  const recordingPayload = {
+    appKey: key,
+    sdkKey: key,
+    mn: meetingNumber.toString(),
+    role,
+    iat,
     exp,
-    tpc: meetingNumber.toString(), // 会议号
-    role_type: role, // 1: 主持人, 0: 参会者
-  };
-  const key1 = jwt.sign(payload, secret, { algorithm: "HS256" });
+    user_identity: 'host',
+    tokenExp: exp,
+    permissions: ["raw_recording"], // 授权原始录制权限
+  }
+  const oHeader = { alg: 'HS256', typ: 'JWT' }
+  const sHeader = JSON.stringify(oHeader)
+  const sRecordingPayload = JSON.stringify(recordingPayload)
+  const sdkRecordingJWT = KJUR.jws.JWS.sign('HS256', sHeader, sRecordingPayload, process.env.ZOOM_CLIENT_SECRET)
+  return sdkRecordingJWT
+}
+
+function generateJWTZoomToken(meetingNumber, role = 0) {
+  const key = process.env.ZOOM_CLIENT_ID
+  const iat = Math.floor(Date.now() / 1000) - 30  // 签发时间
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 // 过期时间 (24小时)
   const oHeader = { alg: 'HS256', typ: 'JWT' }
 
   const oPayload = {
@@ -255,7 +270,7 @@ function generateJWTZoomToken(meetingNumber, role = 0) {
   const sHeader = JSON.stringify(oHeader)
   const sPayload = JSON.stringify(oPayload)
   const sdkJWT = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, process.env.ZOOM_CLIENT_SECRET)
-  return { key1, key2: sdkJWT}
+  return { key1: generateRecordingJWTZoomToken(meetingNumber, role), key2: sdkJWT}
 }
 module.exports = {
   getDeeplink,
