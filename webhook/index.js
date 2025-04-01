@@ -64,8 +64,8 @@ app.get('/createMeeting', async (req, res) => {
   try {
     const result = await createMeeting(token)
     console.log('getZoomUser(token)', result)
-    // const resultAdd = await addUserToMeeting(token, result.id, 'develop@altatech.dev')
-    // console.log('addUserToMeeting', resultAdd)
+    const resultAdd = await addUserToMeeting(token, result.id, 'develop@altatech.dev')
+    console.log('addUserToMeeting', resultAdd)
     res.json(result)
   } catch (e) {
     console.log('errrrrrrrr', e)
