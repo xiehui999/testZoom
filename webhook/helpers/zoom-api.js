@@ -175,6 +175,14 @@ function setCoHost(token, meetingId, email) {
   })
 }
 
+function getMeetingInfo(token, meetingId) {
+  return apiRequest('GET', `/meetings/${meetingId}`, token, {})
+}
+
+function getMeetingRecordingsInfo(token, meetingId) {
+  return apiRequest('GET', `/meetings/${meetingId}/jointoken/local_recording`, token, {})
+}
+
 function startRecording(token, meetingId, email) {
   return apiRequest('PATCH', `/meetings/${meetingId}/recordings`, token, {
     action: 'start'
@@ -284,4 +292,6 @@ module.exports = {
   setCoHost,
   addUserToMeeting,
   generateJWTZoomToken,
+  getMeetingInfo,
+  getMeetingRecordingsInfo,
 }
