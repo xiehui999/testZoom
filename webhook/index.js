@@ -3,8 +3,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const crypto = require('crypto')
 const axios = require('axios')
-const { getInstallURL, getToken, getZoomUser, getCurrentZoomUser, createMeeting, addUserToMeeting,
-  generateJWTZoomToken, getMeetingInfo, getMeetingRecordingsInfo,
+const {
+  getInstallURL, getToken, getZoomUser, getCurrentZoomUser, createMeeting, addUserToMeeting,
+  generateJWTZoomToken, getMeetingInfo, getMeetingRecordingsInfo, refreshToken,
 } = require('./helpers/zoom-api')
 
 const app = express()
@@ -21,9 +22,9 @@ const getAccountToken = async () => {
       `grant_type=account_credentials&account_id=${process.env.ZOOM_ACCOUNT_ID}`,
       {
         headers: {
-          'Authorization': `Basic ${Buffer.from(`${process.env.ZOOM_APP_CLIENT_ID}:${process.env.ZOOM_APP_CLIENT_SECRET}`).toString('base64')}`
-        }
-      }
+          'Authorization': `Basic ${Buffer.from(`${process.env.ZOOM_APP_CLIENT_ID}:${process.env.ZOOM_APP_CLIENT_SECRET}`).toString('base64')}`,
+        },
+      },
     )
 
     const response = await request.data
@@ -44,24 +45,33 @@ app.get('/install', async (req, res) => {
 })
 app.get('/generateJWTZoomToken', async (req, res) => {
   const { meetingId } = req.query
-  if(!meetingId) return res.json('he meeting ID does not exist.')
-  const recordingsInfo  = await getMeetingRecordingsInfo(token, meetingId)
-  const result  = await generateJWTZoomToken(meetingId)
-  const result1  = await getMeetingInfo(token, meetingId)
-
-  res.json({result, meetingInfo: result1, recordingsInfo })
+  if (!meetingId) return res.json('he meeting ID does not exist.')
+  try {
+    const recordingsInfo = await getMeetingRecordingsInfo(token, meetingId)
+    const result = await generateJWTZoomToken(meetingId)
+    const result1 = await getMeetingInfo(token, meetingId)
+    res.json({ result, meetingInfo: result1, recordingsInfo })
+  } catch (e) {
+    console.log('errrrrrrrr', e)
+    res.json(e)
+  }
 })
-let token = ''
+let token = "eyJzdiI6IjAwMDAwMiIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6ImFjODUwMTc4LTc1MWEtNDdiOS04ODBhLTU5MGExZjhhMjNkOCJ9.eyJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJHbkZKZGlUMVNPdWZLc3pHZDVCRml3IiwidmVyIjoxMCwiYXVpZCI6ImM3YjY4Mzc2NzQxNzlhNDYwMTFlZDNlYTUxNmFlZWMzMGRhYmVmYjQ1ZDhiNmViNmU2OWE1NmQzY2JmZjJlMjQiLCJuYmYiOjE3NDM1NTk1NTMsImNvZGUiOiJ6VlZlOG1uYW9oSkhqTVVjS2pIU00tSFJ3c2VfSkNEMWciLCJpc3MiOiJ6bTpjaWQ6M2VNVnRkU1JKZUxPcGp4cHM4WkxRIiwiZ25vIjowLCJleHAiOjE3NDM1NjMxNTMsInR5cGUiOjAsImlhdCI6MTc0MzU1OTU1MywiYWlkIjoiNXN0UHcyWmdSZXVZNTFoQ0FXejVDUSJ9.Zzx0cUv8hpmfno1u8tnxe0gMJ4_-B-epgXWtC7pj8M8AINMBUrnxaHWDe8l-ixPwTCrE9gveO_vD4X_v1MxW7Q"
+let refreshTokenData = "eyJzdiI6IjAwMDAwMiIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6IjEwOGVhZDY5LTgyNzYtNDQwZi1iNjc5LWFjNGI5NTZjZjgxNCJ9.eyJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJHbkZKZGlUMVNPdWZLc3pHZDVCRml3IiwidmVyIjoxMCwiYXVpZCI6ImM3YjY4Mzc2NzQxNzlhNDYwMTFlZDNlYTUxNmFlZWMzMGRhYmVmYjQ1ZDhiNmViNmU2OWE1NmQzY2JmZjJlMjQiLCJuYmYiOjE3NDM1NTk1NTMsImNvZGUiOiJ6VlZlOG1uYW9oSkhqTVVjS2pIU00tSFJ3c2VfSkNEMWciLCJpc3MiOiJ6bTpjaWQ6M2VNVnRkU1JKZUxPcGp4cHM4WkxRIiwiZ25vIjowLCJleHAiOjE3NTEzMzU1NTMsInR5cGUiOjEsImlhdCI6MTc0MzU1OTU1MywiYWlkIjoiNXN0UHcyWmdSZXVZNTFoQ0FXejVDUSJ9.gluEtvwdXo9SyR8JudPv3GV4MU-5u-2Y-y8x7Bqf6514WBmvmYe0Pt2Pvh1p8HyfN-3mhbWIiAFBl8OoW3DtPw"
+
 app.get('/auth', async (req, res) => {
   const code = req.query.code
   const result = await getToken(code)
   token = result.access_token
+  refreshTokenData = result.refresh_token
   try {
-    console.log('getZoomUser(token)', await getCurrentZoomUser(token))
+    const user = await getCurrentZoomUser(token)
+    console.log('getZoomUser(token)')
+    res.json({ token: result, user })
   } catch (e) {
+    res.json(e)
     console.log('errrrrrrrr', e)
   }
-  res.json(result)
 })
 app.get('/createMeeting', async (req, res) => {
   try {
@@ -86,14 +96,14 @@ app.get('/joinBot', async (req, res) => {
       {
         email: 'bot@example.com',
         first_name: 'Recording',
-        last_name: 'Bot'
+        last_name: 'Bot',
       },
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
+          'Content-Type': 'application/json',
+        },
+      },
     )
 
     console.log('✅ Bot 已加入会议:', response.data)
@@ -105,6 +115,17 @@ app.get('/joinBot', async (req, res) => {
 })
 
 //
+app.get('/refreshToken', async (req, res) => {
+  try {
+    const result = await refreshToken(refreshTokenData)
+    token = result.access_token
+    refreshTokenData = result.refresh_token
+    res.json(result)
+  } catch (error) {
+    console.error('❌ refreshToken失败:', error)
+    res.json({ success: false, error: error })
+  }
+})
 app.post('/webhookServer', (req, res) => {
 
   var response
@@ -132,9 +153,9 @@ app.post('/webhookServer', (req, res) => {
       response = {
         message: {
           plainToken: req.body.payload.plainToken,
-          encryptedToken: hashForValidate
+          encryptedToken: hashForValidate,
         },
-        status: 200
+        status: 200,
       }
 
       console.log(response.message)
